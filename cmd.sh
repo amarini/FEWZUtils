@@ -1,0 +1,1 @@
+SRT_LHAPDF_DATA_PATH_SCRAMRTDEL=/cvmfs/cms.cern.ch/slc6_amd64_gcc630/external/lhapdf/6.2.1-gnimlf2/share/LHAPDF LHAPDF_DATA_PATH=/cvmfs/cms.cern.ch/slc6_amd64_gcc630/external/lhapdf/6.2.1-gnimlf2/share/LHAPDF ./local_run.sh z 105to160 input_z_m50_NNPDF31_nnlo_luxqed.txt histograms.txt root . 4
