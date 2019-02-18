@@ -35,7 +35,7 @@ Input scheme: 0. Manual input; 1. Gmu scheme; 2. AlphaMz scheme
 =============================================
 Vegas Parameters
 'Relative accuracy (in %)           = ' 0d0
-'Absolute accuracy                  = ' 3d-2
+'Absolute accuracy                  = ' 3d-3
 'Number of calls per iteration      = ' 100000
 'Number of increase calls per iter. = ' 50000
 'Maximum number of evaluations      = ' 20000000
@@ -109,7 +109,7 @@ Cut on Z rapidity for well-defined Collins-Soper Angles at pp Collider
 =============================================
 (See manual for complete listing)
 'PDF set                            = ' 'NNPDF31_nnlo_as_0118_luxqed'
-'Turn off PDF error (1=Yes, 0=No)   = ' 0
+'Turn off PDF error (1=Yes, 0=No)   = ' 1
 (Active for MSTW2008 only, if PDF error is on:)
 (Compute PDF+as errors: 1; just PDF errors: 0)
 'Which alphaS                       = ' 1

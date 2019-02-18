@@ -19,7 +19,7 @@ def ProduceHistogram(L):
     L.sort()
     g=ROOT.TGraph()
     g.SetName("g_mll")
-    print "DEBUG","L[0]",L[0]
+    print "DEBUG",len(L),L[0][2],L[-1][3]
     h=ROOT.TH1D("h_mll","h_mll",len(L),L[0][2],L[-1][3]) ## I would need to change it to variable binning
     for xc, xs, low, high in L:
         g.SetPoint(g.GetN(),xc,xs)
@@ -64,6 +64,7 @@ def ReadFile(fname):
             else: lowbound=mllmin
             R.append( [xc, xs, lowbound, mllmax] ) 
 
+    print "* Found ",len(R),"entries from",R[0][2],R[-1][3]
     return R
 
 L=[]

@@ -2,10 +2,11 @@
 
 FINAL="FINAL"
 mkdir $FINAL
-for mass in {105..160};
+for mass in `seq 105 0.1 150`;
 do
     MASS0=$mass
-    MASS1=$(($mass+1))
+    DELTA=0.1
+    MASS1=$(echo "$MASS0+$DELTA" | bc -l)
     RUNDIR="CONDOR_${MASS0}to${MASS1}"
     [ -d $RUNDIR ] || continue
     echo "Finalizing job $job: $MASS0 - $MASS1"

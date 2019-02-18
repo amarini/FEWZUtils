@@ -3,7 +3,7 @@ import os,sys
 from optparse import OptionParser
 
 usage='''
-   %prog  file pdf
+   %prog  file pdf scale_files
 '''
 parser=OptionParser(usage=usage)
 #parser.add_option("-p","--pdf",action='store_true',help="loop over pdfs files",default=False)
@@ -11,23 +11,26 @@ opts,args=parser.parse_args()
 
 import ROOT
 
-fin=open(args[0],"r")
+def getSigmaAndError(fname):
+    fin=open(fname,"r")
+    isResult=False
+    sigma=None
+    error=None
+    for line in fin:
+        if not isResult and 'RESULT' in line: 
+            isResult=True
+            continue
+        if isResult and 'Sigma' in line:
+            sigma=float(line.split('=')[1].split()[0])
+        if isResult and 'Error' in line:
+            error=float(line.split('=')[1].split()[0])
+        if isResult and '====' in line: break
+    fin.close()
+    return sigma,error
 
-isResult=False
-sigma=None
-error=None
-for line in fin:
-    if not isResult and 'RESULT' in line: 
-        isResult=True
-        continue
-    if isResult and 'Sigma' in line:
-        sigma=float(line.split('=')[1].split()[0])
-    if isResult and 'Error' in line:
-        error=float(line.split('=')[1].split()[0])
-    if isResult and '====' in line: break
+sigma,error=getSigmaAndError(args[0])
 
 pdfs=[]
-fin.close()
 fin=open(args[1],"r")
 isResult=False
 
@@ -54,6 +57,15 @@ pdfhi = pdfs[hi]
 pdf68 = (pdfhi-pdflo)/2.
 print "pdfs val extreme=",pdflo,pdfhi,"Error=",pdf68
 
+scales=[]
+for i in range(2,len(args)):
+    print "Opening scale file:",args[i]
+    s,e=getSigmaAndError(args[i])
+    scales.append(s)
+scales.sort()
+scalesrange =  (scales[-1] - scales[0])/2.
+
+
 print "---------------------"
-print "Sigma=",sigma,"+/-(stat)",error,"+/-(pdf)",pdf68
+print "Sigma=",sigma,"+/-(stat)",error,"+/-(pdf)",pdfrange,"+/-(scale)",scalesrange
 print "---------------------"

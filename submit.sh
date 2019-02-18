@@ -1,9 +1,12 @@
 #!/bin/bash
 [ "$WORKDIR" == "" ] && export WORKDIR="/tmp/amarini/"
 
+
+DELTA=0.1
 #MASS0=$(($1+105))
+#MASS1=$(($MASS0+1))
 MASS0=$1
-MASS1=$(($MASS0+1))
+MASS1=$(echo "$MASS0+$DELTA" | bc -l)
 
 BASEDIR=/afs/cern.ch/user/a/amarini/work/FEWZ/FEWZ_3.1.rc/bin
 echo "Executing job ${1}. Mass range is $MASS0 - $MASS1"
@@ -33,7 +36,12 @@ sed -i'' "s/YYY/${MASS1}/g" $WORKDIR/$HISTO
 echo "INPUT File: ${WORKDIR}/$INPUT"
 echo "HISTO File: ${WORKDIR}/$HISTO"
 echo "RUNDIR:CONDOR_${MASS0}to${MASS1}"
-SRT_LHAPDF_DATA_PATH_SCRAMRTDEL=/cvmfs/cms.cern.ch/slc6_amd64_gcc630/external/lhapdf/6.2.1-gnimlf2/share/LHAPDF LHAPDF_DATA_PATH=/cvmfs/cms.cern.ch/slc6_amd64_gcc630/external/lhapdf/6.2.1-gnimlf2/share/LHAPDF ./local_run.sh z $WORKDIR/CONDOR_${MASS0}to${MASS1} ${WORKDIR}/$INPUT ${WORKDIR}/$HISTO txt . 4
+
+RUNDIR=CONDOR_${MASS0}to${MASS1}
+mkdir -p /eos/user/a/amarini/FEWZ/$RUNDIR
+ln -s /eos/user/a/amarini/FEWZ/$RUNDIR
+
+SRT_LHAPDF_DATA_PATH_SCRAMRTDEL=/cvmfs/cms.cern.ch/slc6_amd64_gcc630/external/lhapdf/6.2.1-gnimlf2/share/LHAPDF LHAPDF_DATA_PATH=/cvmfs/cms.cern.ch/slc6_amd64_gcc630/external/lhapdf/6.2.1-gnimlf2/share/LHAPDF ./local_run.sh z $WORKDIR/${RUNDIR} ${WORKDIR}/$INPUT ${WORKDIR}/$HISTO txt . 4
 
 ### RSYNC WORKDIR (so afs don't die)
 #rsync -avP $WORKDIR/${MASS0}to${MASS1} $BASEDIR/jobs/
