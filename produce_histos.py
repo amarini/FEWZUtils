@@ -1,4 +1,4 @@
-import os,sys
+import os,sys,re
 
 from optparse import OptionParser
 
@@ -8,9 +8,13 @@ usage='''
 parser=OptionParser(usage=usage)
 #parser.add_option("-p","--pdf",action='store_true',help="loop over pdfs files",default=False)
 parser.add_option("-o","--outname",help="Output file name [%default]",default="mll.root")
+parser.add_option("-t","--txt",action='store_true',help="Save txt file [%default]",default=False)
 opts,args=parser.parse_args()
 
 import ROOT
+
+if opts.txt:txt=open(re.sub('\.root','.txt',opts.outname),"w")
+if opts.txt:dup = [] ## this are not really duplicates, but let's try to remove them
 
 
 def ProduceHistogram(L):
@@ -62,6 +66,12 @@ def ReadFile(fname):
                 lowbound=(xc + R[-1][0])/2.
                 R[-1][3]=lowbound
             else: lowbound=mllmin
+            if opts.txt:
+                #save every 0.5 GeV
+                if int(xc*10) % 10 in [0,5] and int(xc*100)%10==0: 
+                    if xc not in dup:
+                        dup.append(xc)
+                        print >>txt, re.sub('\n','',line)
             R.append( [xc, xs, lowbound, mllmax] ) 
 
     print "* Found ",len(R),"entries from",R[0][2],R[-1][3]
@@ -75,3 +85,4 @@ g,h=ProduceHistogram(L)
 g.Write()
 h.Write()
 fOut.Close()
+if opts.txt:txt.close()

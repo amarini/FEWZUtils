@@ -2,7 +2,7 @@
 [ "$WORKDIR" == "" ] && export WORKDIR="/tmp/amarini/"
 
 
-DELTA=0.1
+DELTA=0.2
 #MASS0=$(($1+105))
 #MASS1=$(($MASS0+1))
 MASS0=$1
@@ -27,6 +27,7 @@ cp -v $BASEDIR/input_z_m50_NNPDF31_nnlo_luxqed_XXX_YYY.txt $WORKDIR/$INPUT
 cp -v $BASEDIR/histograms_XXX_YYY.txt $WORKDIR/$HISTO
 sed -i'' "s/XXX/${MASS0}/g" $WORKDIR/$INPUT
 sed -i'' "s/YYY/${MASS1}/g" $WORKDIR/$INPUT
+sed -i'' "s/RANDOM/${RANDOM}/g" $WORKDIR/$INPUT
 
 sed -i'' "s/XXX/${MASS0}/g" $WORKDIR/$HISTO
 sed -i'' "s/YYY/${MASS1}/g" $WORKDIR/$HISTO

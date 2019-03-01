@@ -2,7 +2,8 @@
 
 FINAL="FINAL"
 mkdir $FINAL
-for mass in `seq 105 0.1 150`;
+#for mass in `seq 105 0.1 150`;
+for mass in `seq 150 0.1 160`;
 do
     MASS0=$mass
     DELTA=0.1
